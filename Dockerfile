@@ -11,7 +11,7 @@ RUN composer install \
     --optimize-autoloader \
     --ignore-platform-reqs
 
-FROM php:8.3-fpm-alpine
+FROM php:8.4-fpm-alpine
 
 LABEL author="DevkhaledWaleed"
 
