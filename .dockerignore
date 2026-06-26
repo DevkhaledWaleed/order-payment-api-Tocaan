@@ -1,0 +1,9 @@
+/vendor/
+.git/
+.env
+.env.backup
+.env.production
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
