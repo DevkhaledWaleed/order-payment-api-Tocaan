@@ -23,7 +23,9 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
     ];
-
+    protected $casts = [
+        'is_admin' => 'boolean',
+    ];
     protected $hidden = [
         'password',
         'remember_token',

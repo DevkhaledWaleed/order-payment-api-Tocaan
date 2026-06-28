@@ -1,9 +1,27 @@
+# Vendor
 /vendor/
-.git/
+node_modules/
+
+# Environment
 .env
 .env.backup
 .env.production
+
+/public/hot
+/public/storage
+/public/build
+/storage/*.key
+bootstrap/cache/*.php
+
+
+# IDE
 .idea/
 .vscode/
+
 .DS_Store
 Thumbs.db
+
+# Docker volumes (local)
+docker/volumes/
+
+.git/
