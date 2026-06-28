@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,5 +29,9 @@ Route::middleware('auth:api')->group(function () {
         Route::post('refresh',[AuthController::class, 'refresh'])->name('refresh');
     });
     Route::apiResource('orders', OrderController::class);
+
+    Route::get('payments',         [PaymentController::class, 'index'])->name('payments.index');
+    Route::post('payments',        [PaymentController::class, 'store'])->name('payments.store');
+    Route::get('payments/{payment}',[PaymentController::class, 'show'])->name('payments.show');
 
 });

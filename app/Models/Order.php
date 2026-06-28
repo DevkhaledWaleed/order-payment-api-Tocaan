@@ -33,33 +33,8 @@ class Order extends Model
     protected function status(): Attribute
     {
         return Attribute::make(
-            get: function ($value) {
-                if ($value instanceof OrderStatus) {
-                    return $value;
-                }
-                if (is_numeric($value)) {
-                    return OrderStatus::from((int) $value);
-                }
-                if (is_string($value)) {
-                    return OrderStatus::fromString($value) ?? OrderStatus::PENDING;
-                }
-                return $value;
-            },
-            set: function ($value) {
-                if ($value instanceof OrderStatus) {
-                    return $value->value;
-                }
-                if (is_numeric($value)) {
-                    return (int) $value;
-                }
-                if (is_string($value)) {
-                    $enum = OrderStatus::fromString($value);
-                    if ($enum !== null) {
-                        return $enum->value;
-                    }
-                }
-                return $value;
-            }
+            get: fn ($v) => is_numeric($v) ? OrderStatus::from((int)$v) : OrderStatus::fromString($v),
+            set: fn ($v) => $v instanceof OrderStatus ? $v->value : OrderStatus::fromString($v)?->value,
         );
     }
 
