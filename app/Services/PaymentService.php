@@ -53,8 +53,13 @@ class PaymentService
             }
         }
 
-        // ── Business rule & Locking ──────────────────────────────────────────
+        // ── Transactional processing ─────────────────────────────────────────
+        // All writes are inside a transaction so a gateway/DB failure rolls
+        // everything back instead of leaving a stale `pending` record.
+
+        //Business rule & Locking 
         // We lock the order first to ensure any concurrent updates on the order finish first.
+        return DB::transaction(function () use ($dto) {
         $order = Order::where('id', $dto->orderId)->lockForUpdate()->firstOrFail();
 
         if (! $order->isConfirmed()) {
@@ -64,10 +69,6 @@ class PaymentService
             );
         }
 
-        // ── Transactional processing ─────────────────────────────────────────
-        // All writes are inside a transaction so a gateway/DB failure rolls
-        // everything back instead of leaving a stale `pending` record.
-        return DB::transaction(function () use ($dto, $order) {
             // 1. Create payment record (pending)
             $payment = Payment::create([
                 'order_id'        => $order->id,
