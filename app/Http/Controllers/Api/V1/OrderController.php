@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\StoreOrderRequest;
@@ -25,7 +25,7 @@ class OrderController extends Controller
     public function index(Request $request): AnonymousResourceCollection
     {
         $request->validate([
-            'status'   => ['nullable', 'in:pending,confirmed,cancelled'],
+            'status' => ['nullable', 'in:pending,confirmed,cancelled'],
             'per_page' => ['nullable', 'integer', 'min:1', 'max:100'],
         ]);
 
@@ -42,7 +42,7 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request): JsonResponse
     {
-        $data            = $request->validated();
+        $data = $request->validated();
         $data['user_id'] = Auth::id();
 
         $order = $this->orderService->createOrder($data);
@@ -50,7 +50,7 @@ class OrderController extends Controller
 
         return response()->json([
             'message' => 'Order created successfully.',
-            'data'    => new OrderResource($order),
+            'data' => new OrderResource($order),
         ], 201);
     }
 
@@ -79,7 +79,7 @@ class OrderController extends Controller
 
         return response()->json([
             'message' => 'Order updated successfully.',
-            'data'    => new OrderResource($updated),
+            'data' => new OrderResource($updated),
         ]);
     }
 

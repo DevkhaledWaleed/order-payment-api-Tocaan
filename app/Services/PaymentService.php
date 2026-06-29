@@ -41,7 +41,8 @@ class PaymentService
      */
     public function processPayment(ProcessPaymentDTO $dto): Payment
     {
-        // ── Idempotency check ────────────────────────────────────────────────
+        // TODO:Add redis cache to avoid latency
+        // Idempotency check
         // If the client already sent this key, return the cached result.
         if ($dto->idempotencyKey !== null) {
             $existing = Payment::with('order')
@@ -71,9 +72,9 @@ class PaymentService
 
             // 1. Create payment record (pending)
             $payment = Payment::create([
-                'order_id'        => $order->id,
-                'payment_method'  => $dto->paymentMethod,
-                'status'          => 'pending',
+                'order_id' => $order->id,
+                'payment_method' => $dto->paymentMethod,
+                'status' => 'pending',
                 'idempotency_key' => $dto->idempotencyKey,
             ]);
 
@@ -82,11 +83,11 @@ class PaymentService
 
             // 3. Resolve the correct gateway and process — returns a GatewayResultDTO
             $gateway = $this->resolver->resolve($dto->paymentMethod);
-            $result  = $gateway->process($payment);
+            $result = $gateway->process($payment);
 
             // 4. Update payment using typed DTO properties (no magic array keys)
             $payment->update([
-                'status'           => $result->success ? 'successful' : 'failed',
+                'status' => $result->success ? 'successful' : 'failed',
                 'gateway_response' => $result->raw,
             ]);
 

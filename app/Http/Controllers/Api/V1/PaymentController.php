@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\DTOs\ProcessPaymentDTO;
 use App\Http\Controllers\Controller;
@@ -58,7 +58,7 @@ class PaymentController extends Controller
 
         return response()->json([
             'message' => 'Payment processed successfully.',
-            'data'    => new PaymentResource($payment),
+            'data' => new PaymentResource($payment),
         ], 201);
     }
 

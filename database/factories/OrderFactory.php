@@ -2,11 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<\App\Models\Order>
+ * @extends Factory<Order>
  */
 class OrderFactory extends Factory
 {
@@ -14,15 +16,15 @@ class OrderFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'total'   => 0, // Recalculated in configure()
-            'status'  => $this->faker->randomElement(['pending', 'confirmed', 'cancelled']),
+            'total' => 0, // Recalculated in configure()
+            'status' => $this->faker->randomElement(['pending', 'confirmed', 'cancelled']),
         ];
     }
 
     public function configure(): static
     {
-        return $this->afterCreating(function (\App\Models\Order $order) {
-            $items = \App\Models\OrderItem::factory()->count(1)->create(['order_id' => $order->id]);
+        return $this->afterCreating(function (Order $order) {
+            $items = OrderItem::factory()->count(1)->create(['order_id' => $order->id]);
             $order->update(['total' => $items->sum(fn ($i) => $i->quantity * $i->price)]);
         });
     }

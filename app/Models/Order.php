@@ -27,12 +27,12 @@ class Order extends Model
     protected function status(): Attribute
     {
         return Attribute::make(
-            get: fn ($status) => is_numeric($status) ? OrderStatus::from((int)$status) : OrderStatus::fromString($status),
+            get: fn ($status) => is_numeric($status) ? OrderStatus::from((int) $status) : OrderStatus::fromString($status),
             set: fn ($status) => $status instanceof OrderStatus ? $status->value : OrderStatus::fromString($status)?->value,
         );
     }
 
-    // ── Relationships ─────────────────────────────────────────────────────────
+    // Relationships
 
     public function user(): BelongsTo
     {
@@ -43,12 +43,13 @@ class Order extends Model
     {
         return $this->hasMany(Payment::class);
     }
+
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
 
-    // ── Scopes ───────────────────────────────────────────────────────────────
+    // Scopes
 
     public function scopeByStatus(Builder $query, $status): Builder
     {
@@ -69,7 +70,7 @@ class Order extends Model
         return $query;
     }
 
-    // ── Business Logic ────────────────────────────────────────────────────────
+    // Business Logic
 
     public function hasPayments(): bool
     {

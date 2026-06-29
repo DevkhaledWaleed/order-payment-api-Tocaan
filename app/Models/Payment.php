@@ -41,6 +41,7 @@ class Payment extends Model
                 if (is_string($value)) {
                     return PaymentStatus::fromString($value) ?? PaymentStatus::PENDING;
                 }
+
                 return $value;
             },
             set: function ($value) {
@@ -56,12 +57,13 @@ class Payment extends Model
                         return $enum->value;
                     }
                 }
+
                 return $value;
             }
         );
     }
 
-    // ── Relationships ─────────────────────────────────────────────────────────
+    // Relationships
 
     public function order(): BelongsTo
     {

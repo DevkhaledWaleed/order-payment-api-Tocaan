@@ -16,7 +16,8 @@ class PaymentGatewayResolver
     /**
      * Resolve a gateway by its method key.
      *
-     * @param  string $method  e.g. 'credit_card', 'paypal', 'stripe'
+     * @param  string  $method  e.g. 'credit_card', 'paypal', 'stripe'
+     *
      * @throws InvalidArgumentException if the method is not registered
      */
     public function resolve(string $method): PaymentGatewayInterface
@@ -25,7 +26,7 @@ class PaymentGatewayResolver
 
         if (! array_key_exists($method, $gateways)) {
             throw new InvalidArgumentException(
-                "Payment gateway [{$method}] is not registered. " .
+                "Payment gateway [{$method}] is not registered. ".
                 'Add it to config/payment_gateways.php.'
             );
         }

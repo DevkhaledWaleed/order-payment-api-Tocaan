@@ -18,7 +18,7 @@ class ProcessPaymentRequest extends FormRequest
         $availableMethods = app(PaymentGatewayResolver::class)->availableMethods();
 
         return [
-            'order_id'       => ['required', 'integer', 'exists:orders,id'],
+            'order_id' => ['required', 'integer', 'exists:orders,id'],
             'payment_method' => ['required', 'string', Rule::in($availableMethods)],
         ];
     }
@@ -28,10 +28,10 @@ class ProcessPaymentRequest extends FormRequest
         $methods = implode(', ', app(PaymentGatewayResolver::class)->availableMethods());
 
         return [
-            'order_id.required'       => 'An order ID is required.',
-            'order_id.exists'         => 'The specified order does not exist.',
+            'order_id.required' => 'An order ID is required.',
+            'order_id.exists' => 'The specified order does not exist.',
             'payment_method.required' => 'A payment method is required.',
-            'payment_method.in'       => "Payment method must be one of: {$methods}.",
+            'payment_method.in' => "Payment method must be one of: {$methods}.",
         ];
     }
 }

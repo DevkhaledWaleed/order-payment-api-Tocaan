@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use function Symfony\Component\String\s;
 
 class AuthController extends Controller
 {
@@ -46,7 +47,7 @@ class AuthController extends Controller
     public function me(): JsonResponse
     {
         return response()->json([
-            'data' => new UserResource(Auth::guard('api')->user()),
+            'data' => UserResource::make(Auth::guard('api')->user()),
         ]);
     }
 
@@ -72,16 +73,16 @@ class AuthController extends Controller
         return $this->respondWithToken($token, Auth::guard('api')->user());
     }
 
-    // ── Private ───────────────────────────────────────────────────────────────
+    // Private
 
     private function respondWithToken(string $token, User $user, int $status = 200): JsonResponse
     {
         return response()->json([
             'data' => [
-                'user'         => new UserResource($user),
+                'user' => new UserResource($user),
                 'access_token' => $token,
-                'token_type'   => 'bearer',
-                'expires_in'   => Auth::guard('api')->factory()->getTTL() * 60,
+                'token_type' => 'bearer',
+                'expires_in' => Auth::guard('api')->factory()->getTTL() * 60,
             ],
         ], $status);
     }

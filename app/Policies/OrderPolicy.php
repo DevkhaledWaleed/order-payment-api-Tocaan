@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Order;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class OrderPolicy
 {
@@ -12,7 +11,7 @@ class OrderPolicy
      * Runs before every policy check.
      * If admin → bypass everything and grant access.
      */
-    public function before(User $user, string $ability): bool|null
+    public function before(User $user, string $ability): ?bool
     {
         if ($user->is_admin) {
             return true; // admin passes ALL checks immediately

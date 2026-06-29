@@ -16,8 +16,8 @@ use App\Http\Requests\Payment\ProcessPaymentRequest;
 final readonly class ProcessPaymentDTO
 {
     public function __construct(
-        public int     $orderId,
-        public string  $paymentMethod,
+        public int $orderId,
+        public string $paymentMethod,
         public ?string $idempotencyKey = null,
     ) {}
 
@@ -28,8 +28,8 @@ final readonly class ProcessPaymentDTO
     public static function fromRequest(ProcessPaymentRequest $request): self
     {
         return new self(
-            orderId:        $request->integer('order_id'),
-            paymentMethod:  $request->validated('payment_method'),
+            orderId: $request->integer('order_id'),
+            paymentMethod: $request->validated('payment_method'),
             idempotencyKey: $request->header('Idempotency-Key'),
         );
     }

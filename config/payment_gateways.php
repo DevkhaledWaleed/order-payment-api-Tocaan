@@ -1,5 +1,9 @@
 <?php
 
+use App\PaymentGateways\CreditCardGateway;
+use App\PaymentGateways\PayPalGateway;
+use App\PaymentGateways\StripeGateway;
+
 return [
 
     /*
@@ -13,11 +17,11 @@ return [
     |   3. Done — no other code changes required.
     |
     */
-
+    //TODO: Move to AppServiceProvider to bind from boot
     'gateways' => [
-        'credit_card' => \App\PaymentGateways\CreditCardGateway::class,
-        'paypal'      => \App\PaymentGateways\PayPalGateway::class,
-        'stripe'      => \App\PaymentGateways\StripeGateway::class,
+        'credit_card' => CreditCardGateway::class,
+        'paypal' => PayPalGateway::class,
+        'stripe' => StripeGateway::class,
     ],
 
     /*
@@ -27,19 +31,19 @@ return [
     */
 
     'credit_card' => [
-        'api_key'    => env('CREDIT_CARD_API_KEY', 'test_key'),
+        'api_key' => env('CREDIT_CARD_API_KEY', 'test_key'),
         'api_secret' => env('CREDIT_CARD_API_SECRET', 'test_secret'),
     ],
 
     'paypal' => [
-        'client_id'     => env('PAYPAL_CLIENT_ID', 'test_client_id'),
+        'client_id' => env('PAYPAL_CLIENT_ID', 'test_client_id'),
         'client_secret' => env('PAYPAL_CLIENT_SECRET', 'test_client_secret'),
-        'mode'          => env('PAYPAL_MODE', 'sandbox'),
+        'mode' => env('PAYPAL_MODE', 'sandbox'),
     ],
 
     'stripe' => [
         'publishable_key' => env('STRIPE_PUBLISHABLE_KEY', 'pk_test_demo'),
-        'secret_key'      => env('STRIPE_SECRET_KEY', 'sk_test_demo'),
+        'secret_key' => env('STRIPE_SECRET_KEY', 'sk_test_demo'),
     ],
 
 ];
