@@ -17,7 +17,7 @@ return [
     |   3. Done — no other code changes required.
     |
     */
-
+    //TODO: Move to AppServiceProvider to bind from boot
     'gateways' => [
         'credit_card' => CreditCardGateway::class,
         'paypal' => PayPalGateway::class,
