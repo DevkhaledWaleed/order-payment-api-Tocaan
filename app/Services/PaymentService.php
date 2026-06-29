@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Http\DTOs\ProcessPaymentDTO;
+use App\DTOs\ProcessPaymentDTO;
 use App\Models\Order;
 use App\Models\Payment;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -53,8 +53,9 @@ class PaymentService
             }
         }
 
-        // ── Business rule ────────────────────────────────────────────────────
-        $order = Order::findOrFail($dto->orderId);
+        // ── Business rule & Locking ──────────────────────────────────────────
+        // We lock the order first to ensure any concurrent updates on the order finish first.
+        $order = Order::where('id', $dto->orderId)->lockForUpdate()->firstOrFail();
 
         if (! $order->isConfirmed()) {
             throw new LogicException(

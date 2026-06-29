@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\DTOs\ProcessPaymentDTO;
+use App\DTOs\ProcessPaymentDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Payment\ProcessPaymentRequest;
 use App\Http\Resources\PaymentResource;

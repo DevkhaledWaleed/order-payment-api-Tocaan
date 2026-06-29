@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Contracts\PaymentGatewayInterface;
+use App\Http\Contracts\PaymentGatewayInterface;
 use InvalidArgumentException;
 
 /**

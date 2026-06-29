@@ -2,7 +2,7 @@
 
 namespace App\Http\Contracts;
 
-use App\Http\DTOs\GatewayResultDTO;
+use App\DTOs\GatewayResultDTO;
 use App\Models\Payment;
 
 /**

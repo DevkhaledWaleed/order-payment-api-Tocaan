@@ -3,7 +3,7 @@
 namespace App\PaymentGateways;
 
 use App\Http\Contracts\PaymentGatewayInterface;
-use App\Http\DTOs\GatewayResultDTO;
+use App\DTOs\GatewayResultDTO;
 use App\Models\Payment;
 use Illuminate\Support\Str;
 /**
