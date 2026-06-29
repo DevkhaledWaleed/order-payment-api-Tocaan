@@ -1,8 +1,3 @@
-# clarification
-
-This file was created with limited AI assistance during the completion of the task.
-
----
 # Order & Payment Management API
 
 A Laravel 11 REST API for managing orders and payments, designed with clean architecture and extensibility in mind. The payment gateway system uses the **Strategy Pattern** — adding a new payment gateway requires creating a single class and registering it in a config file.

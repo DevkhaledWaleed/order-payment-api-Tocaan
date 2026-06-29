@@ -13,13 +13,14 @@ class OrderTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
+
     private string $token;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->user  = User::factory()->create();
+        $this->user = User::factory()->create();
         $this->token = auth('api')->login($this->user);
     }
 
@@ -28,7 +29,7 @@ class OrderTest extends TestCase
         return $this->withToken($this->token);
     }
 
-    // ── Create ────────────────────────────────────────────────────────────────
+    // Create
 
     public function test_user_can_create_an_order(): void
     {
@@ -67,7 +68,7 @@ class OrderTest extends TestCase
         $this->assertEquals(30.00, $response->json('data.total'));
     }
 
-    // ── List ──────────────────────────────────────────────────────────────────
+    // List
 
     public function test_user_can_list_orders(): void
     {
@@ -99,7 +100,7 @@ class OrderTest extends TestCase
             ->assertStatus(422);
     }
 
-    // ── Show ──────────────────────────────────────────────────────────────────
+    // Show
 
     public function test_user_can_view_single_order(): void
     {
@@ -110,7 +111,7 @@ class OrderTest extends TestCase
             ->assertJsonPath('data.id', $order->id);
     }
 
-    // ── Update ────────────────────────────────────────────────────────────────
+    // Update
 
     public function test_user_can_update_order_status(): void
     {
@@ -134,7 +135,7 @@ class OrderTest extends TestCase
         $this->assertEquals(100.00, $response->json('data.total'));
     }
 
-    // ── Delete ────────────────────────────────────────────────────────────────
+    // Delete
 
     public function test_user_can_delete_order_without_payments(): void
     {
@@ -151,7 +152,7 @@ class OrderTest extends TestCase
     {
         $order = Order::factory()->create([
             'user_id' => $this->user->id,
-            'status'  => 'confirmed',
+            'status' => 'confirmed',
         ]);
 
         Payment::factory()->create(['order_id' => $order->id]);
@@ -163,7 +164,7 @@ class OrderTest extends TestCase
         $this->assertDatabaseHas('orders', ['id' => $order->id]);
     }
 
-    // ── Auth Guard ────────────────────────────────────────────────────────────
+    // Auth Guard
 
     public function test_unauthenticated_user_cannot_access_orders(): void
     {

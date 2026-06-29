@@ -14,9 +14,9 @@ namespace App\DTOs;
 final readonly class GatewayResultDTO
 {
     public function __construct(
-        public bool   $success,
+        public bool $success,
         public string $transactionId,
         public string $message,
-        public array  $raw,
+        public array $raw,
     ) {}
 }

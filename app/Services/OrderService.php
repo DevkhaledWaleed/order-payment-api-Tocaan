@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Http\Enums\OrderStatus;
 use App\Models\Order;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use LogicException;
 
@@ -24,7 +23,6 @@ class OrderService
 
     /**
      * Create a new order and calculate the total from items.
-     *
      */
     public function createOrder(array $data): Order
     {
@@ -36,8 +34,8 @@ class OrderService
 
             $order = Order::create([
                 'user_id' => $data['user_id'],
-                'total'   => $total,
-                'status'  => $status,
+                'total' => $total,
+                'status' => $status,
             ]);
 
             $order->items()->createMany($data['items']);
@@ -48,7 +46,6 @@ class OrderService
 
     /**
      * Update an existing order.
-     *
      */
     public function updateOrder(Order $order, array $data): Order
     {
@@ -76,7 +73,6 @@ class OrderService
 
     /**
      * Delete an order — only if no payments are associated.
-     *
      */
     public function deleteOrder(Order $order): void
     {
@@ -91,11 +87,10 @@ class OrderService
         });
     }
 
-    // ── Private Helpers ───────────────────────────────────────────────────────
+    // Private Helpers
 
     /**
      * Calculate the total from an items array.
-     *
      */
     private function calculateTotal(array $items): float
     {

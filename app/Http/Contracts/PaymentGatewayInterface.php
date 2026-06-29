@@ -19,7 +19,7 @@ interface PaymentGatewayInterface
      * Process the given payment through this gateway
      * Returns a typed DTO instead of a raw array for full type safety
      *
-     * @param  Payment $payment  The payment model (pre-saved, status = pending)
+     * @param  Payment  $payment  The payment model (pre-saved, status = pending)
      */
     public function process(Payment $payment): GatewayResultDTO;
 

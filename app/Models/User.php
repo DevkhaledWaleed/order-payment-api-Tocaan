@@ -23,13 +23,16 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
     ];
+
     protected $casts = [
         'is_admin' => 'boolean',
     ];
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -39,10 +42,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return [
             'email_verified_at' => 'datetime',
-            'password'          => 'hashed',
+            'password' => 'hashed',
         ];
     }
-
 
     public function getJWTIdentifier(): mixed
     {
@@ -53,5 +55,4 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
-
 }

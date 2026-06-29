@@ -11,17 +11,17 @@ enum OrderStatus: int
     public static function fromString(string $status): ?self
     {
         return match (strtolower($status)) {
-            'pending'   => self::PENDING,
+            'pending' => self::PENDING,
             'confirmed' => self::CONFIRMED,
             'cancelled' => self::CANCELLED,
-            default     => null,
+            default => null,
         };
     }
 
     public function toString(): string
     {
         return match ($this) {
-            self::PENDING   => 'pending',
+            self::PENDING => 'pending',
             self::CONFIRMED => 'confirmed',
             self::CANCELLED => 'cancelled',
         };

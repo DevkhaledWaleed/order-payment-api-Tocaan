@@ -2,10 +2,11 @@
 
 namespace App\PaymentGateways;
 
-use App\Http\Contracts\PaymentGatewayInterface;
 use App\DTOs\GatewayResultDTO;
+use App\Http\Contracts\PaymentGatewayInterface;
 use App\Models\Payment;
 use Illuminate\Support\Str;
+
 /**
  * Stripe Gateway — Demonstrates how easily a new gateway can be added.
  *
@@ -26,25 +27,25 @@ class StripeGateway implements PaymentGatewayInterface
     public function process(Payment $payment): GatewayResultDTO
     {
         // Simulate Stripe charge creation
-        $chargeId = 'ch_' . Str::random(24);
+        $chargeId = 'ch_'.Str::random(24);
 
         $success = true;
 
         return new GatewayResultDTO(
-            success:       $success,
+            success: $success,
             transactionId: $chargeId,
-            message:       $success
+            message: $success
                 ? 'Stripe charge created successfully.'
                 : 'Stripe charge failed.',
             raw: [
-                'gateway'      => 'stripe',
-                'charge_id'    => $chargeId,
-                'object'       => 'charge',
-                'order_id'     => $payment->order_id,
-                'amount'       => (int) ($payment->order->total * 100), // Stripe uses cents
-                'currency'     => 'usd',
-                'status'       => $success ? 'succeeded' : 'failed',
-                'livemode'     => false,
+                'gateway' => 'stripe',
+                'charge_id' => $chargeId,
+                'object' => 'charge',
+                'order_id' => $payment->order_id,
+                'amount' => (int) ($payment->order->total * 100), // Stripe uses cents
+                'currency' => 'usd',
+                'status' => $success ? 'succeeded' : 'failed',
+                'livemode' => false,
                 'processed_at' => now()->toIso8601String(),
             ],
         );

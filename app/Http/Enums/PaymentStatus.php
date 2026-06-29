@@ -4,9 +4,9 @@ namespace App\Http\Enums;
 
 enum PaymentStatus: int
 {
-    case PENDING    = 0;
+    case PENDING = 0;
     case SUCCESSFUL = 1;
-    case FAILED     = 2;
+    case FAILED = 2;
 
     /**
      * Map a string representation to the corresponding Enum instance.
@@ -14,10 +14,10 @@ enum PaymentStatus: int
     public static function fromString(string $status): ?self
     {
         return match (strtolower($status)) {
-            'pending'    => self::PENDING,
+            'pending' => self::PENDING,
             'successful' => self::SUCCESSFUL,
-            'failed'     => self::FAILED,
-            default      => null,
+            'failed' => self::FAILED,
+            default => null,
         };
     }
 
@@ -27,9 +27,9 @@ enum PaymentStatus: int
     public function toString(): string
     {
         return match ($this) {
-            self::PENDING    => 'pending',
+            self::PENDING => 'pending',
             self::SUCCESSFUL => 'successful',
-            self::FAILED     => 'failed',
+            self::FAILED => 'failed',
         };
     }
 }

@@ -10,21 +10,21 @@ class AuthTest extends TestCase
 {
     use RefreshDatabase;
 
-    // ── Register ──────────────────────────────────────────────────────────────
+    // Register
 
     public function test_user_can_register(): void
     {
         $response = $this->postJson('/api/auth/register', [
-            'name'                  => 'Test User',
-            'email'                 => 'test@example.com',
-            'password'              => 'password123',
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password123',
             'password_confirmation' => 'password123',
         ]);
 
         $response->assertStatus(201)
             ->assertJsonStructure([
                 'data' => [
-                    'user'  => ['id', 'name', 'email'],
+                    'user' => ['id', 'name', 'email'],
                     'access_token',
                     'token_type',
                     'expires_in',
@@ -47,9 +47,9 @@ class AuthTest extends TestCase
         User::factory()->create(['email' => 'duplicate@example.com']);
 
         $response = $this->postJson('/api/auth/register', [
-            'name'                  => 'Another User',
-            'email'                 => 'duplicate@example.com',
-            'password'              => 'password123',
+            'name' => 'Another User',
+            'email' => 'duplicate@example.com',
+            'password' => 'password123',
             'password_confirmation' => 'password123',
         ]);
 
@@ -57,17 +57,17 @@ class AuthTest extends TestCase
             ->assertJsonValidationErrors(['email']);
     }
 
-    // ── Login ─────────────────────────────────────────────────────────────────
+    // Login
 
     public function test_user_can_login(): void
     {
         User::factory()->create([
-            'email'    => 'login@example.com',
+            'email' => 'login@example.com',
             'password' => bcrypt('password123'),
         ]);
 
         $response = $this->postJson('/api/auth/login', [
-            'email'    => 'login@example.com',
+            'email' => 'login@example.com',
             'password' => 'password123',
         ]);
 
@@ -82,7 +82,7 @@ class AuthTest extends TestCase
         User::factory()->create(['email' => 'wrong@example.com']);
 
         $response = $this->postJson('/api/auth/login', [
-            'email'    => 'wrong@example.com',
+            'email' => 'wrong@example.com',
             'password' => 'wrongpassword',
         ]);
 
@@ -90,11 +90,11 @@ class AuthTest extends TestCase
             ->assertJsonFragment(['message' => 'Invalid credentials. Please check your email and password.']);
     }
 
-    // ── Me & Logout ───────────────────────────────────────────────────────────
+    // Me & Logout
 
     public function test_me_returns_authenticated_user(): void
     {
-        $user  = User::factory()->create();
+        $user = User::factory()->create();
         $token = auth('api')->login($user);
 
         $response = $this->withToken($token)->getJson('/api/auth/me');
@@ -110,7 +110,7 @@ class AuthTest extends TestCase
 
     public function test_user_can_logout(): void
     {
-        $user  = User::factory()->create();
+        $user = User::factory()->create();
         $token = auth('api')->login($user);
 
         $this->withToken($token)->postJson('/api/auth/logout')

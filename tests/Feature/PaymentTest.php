@@ -13,27 +13,30 @@ class PaymentTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
+
     private string $token;
+
     private Order $confirmedOrder;
+
     private Order $pendingOrder;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->user  = User::factory()->create();
+        $this->user = User::factory()->create();
         $this->token = auth('api')->login($this->user);
 
         $this->confirmedOrder = Order::factory()->create([
             'user_id' => $this->user->id,
-            'status'  => 'confirmed',
-            'total'   => 150.00,
+            'status' => 'confirmed',
+            'total' => 150.00,
         ]);
 
         $this->pendingOrder = Order::factory()->create([
             'user_id' => $this->user->id,
-            'status'  => 'pending',
-            'total'   => 50.00,
+            'status' => 'pending',
+            'total' => 50.00,
         ]);
     }
 
@@ -47,7 +50,7 @@ class PaymentTest extends TestCase
     public function test_can_process_payment_with_credit_card(): void
     {
         $response = $this->auth()->postJson('/api/payments', [
-            'order_id'       => $this->confirmedOrder->id,
+            'order_id' => $this->confirmedOrder->id,
             'payment_method' => 'credit_card',
         ]);
 
@@ -61,16 +64,16 @@ class PaymentTest extends TestCase
             ]);
 
         $this->assertDatabaseHas('payments', [
-            'order_id'       => $this->confirmedOrder->id,
+            'order_id' => $this->confirmedOrder->id,
             'payment_method' => 'credit_card',
-            'status'         => 1,
+            'status' => 1,
         ]);
     }
 
     public function test_can_process_payment_with_paypal(): void
     {
         $response = $this->auth()->postJson('/api/payments', [
-            'order_id'       => $this->confirmedOrder->id,
+            'order_id' => $this->confirmedOrder->id,
             'payment_method' => 'paypal',
         ]);
 
@@ -82,7 +85,7 @@ class PaymentTest extends TestCase
     public function test_can_process_payment_with_stripe(): void
     {
         $response = $this->auth()->postJson('/api/payments', [
-            'order_id'       => $this->confirmedOrder->id,
+            'order_id' => $this->confirmedOrder->id,
             'payment_method' => 'stripe',
         ]);
 
@@ -94,7 +97,7 @@ class PaymentTest extends TestCase
     public function test_cannot_process_payment_for_pending_order(): void
     {
         $response = $this->auth()->postJson('/api/payments', [
-            'order_id'       => $this->pendingOrder->id,
+            'order_id' => $this->pendingOrder->id,
             'payment_method' => 'credit_card',
         ]);
 
@@ -105,19 +108,19 @@ class PaymentTest extends TestCase
     public function test_payment_requires_valid_order_id(): void
     {
         $this->auth()->postJson('/api/payments', [
-            'order_id'       => 99999,
+            'order_id' => 99999,
             'payment_method' => 'credit_card',
         ])->assertStatus(422)
-          ->assertJsonValidationErrors(['order_id']);
+            ->assertJsonValidationErrors(['order_id']);
     }
 
     public function test_payment_rejects_unknown_gateway(): void
     {
         $this->auth()->postJson('/api/payments', [
-            'order_id'       => $this->confirmedOrder->id,
+            'order_id' => $this->confirmedOrder->id,
             'payment_method' => 'bitcoin',
         ])->assertStatus(422)
-          ->assertJsonValidationErrors(['payment_method']);
+            ->assertJsonValidationErrors(['payment_method']);
     }
 
     // ── List Payments ─────────────────────────────────────────────────────────

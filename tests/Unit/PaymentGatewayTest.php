@@ -18,9 +18,9 @@ class PaymentGatewayTest extends TestCase
         $order->id = 1;
 
         $payment = new Payment([
-            'order_id'       => 1,
+            'order_id' => 1,
             'payment_method' => 'credit_card',
-            'status'         => 'pending',
+            'status' => 'pending',
         ]);
         $payment->id = 1;
         $payment->setRelation('order', $order);
@@ -32,14 +32,14 @@ class PaymentGatewayTest extends TestCase
 
     public function test_credit_card_gateway_has_correct_name(): void
     {
-        $gateway = new CreditCardGateway();
+        $gateway = new CreditCardGateway;
         $this->assertSame('credit_card', $gateway->getName());
     }
 
     public function test_credit_card_gateway_processes_payment_successfully(): void
     {
-        $gateway = new CreditCardGateway();
-        $result  = $gateway->process($this->makeFakePayment());
+        $gateway = new CreditCardGateway;
+        $result = $gateway->process($this->makeFakePayment());
 
         $this->assertInstanceOf(GatewayResultDTO::class, $result);
         $this->assertTrue($result->success);
@@ -52,14 +52,14 @@ class PaymentGatewayTest extends TestCase
 
     public function test_paypal_gateway_has_correct_name(): void
     {
-        $gateway = new PayPalGateway();
+        $gateway = new PayPalGateway;
         $this->assertSame('paypal', $gateway->getName());
     }
 
     public function test_paypal_gateway_processes_payment_successfully(): void
     {
-        $gateway = new PayPalGateway();
-        $result  = $gateway->process($this->makeFakePayment());
+        $gateway = new PayPalGateway;
+        $result = $gateway->process($this->makeFakePayment());
 
         $this->assertInstanceOf(GatewayResultDTO::class, $result);
         $this->assertTrue($result->success);
@@ -72,14 +72,14 @@ class PaymentGatewayTest extends TestCase
 
     public function test_stripe_gateway_has_correct_name(): void
     {
-        $gateway = new StripeGateway();
+        $gateway = new StripeGateway;
         $this->assertSame('stripe', $gateway->getName());
     }
 
     public function test_stripe_gateway_processes_payment_successfully(): void
     {
-        $gateway = new StripeGateway();
-        $result  = $gateway->process($this->makeFakePayment());
+        $gateway = new StripeGateway;
+        $result = $gateway->process($this->makeFakePayment());
 
         $this->assertInstanceOf(GatewayResultDTO::class, $result);
         $this->assertTrue($result->success);

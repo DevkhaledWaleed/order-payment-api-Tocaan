@@ -1,0 +1,2195 @@
+{
+    "info": {
+        "name": "intgretion",
+        "description": "",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "description": "User registration, login, profile, and logout endpoints",
+            "item": [
+                {
+                    "name": "Register",
+                    "description": "Register a new user. Returns a JWT token.",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 201) {",
+                                    "  const json = pm.response.json();",
+                                    "  pm.collectionVariables.set('token', json.data.access_token);",
+                                    "}"
+                                ],
+                                "type": "text/javascript",
+                                "packages": {}
+                            }
+                        }
+                    ],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8000/api/v1/auth/register",
+                            "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "register"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "protocol": "http",
+                            "port": "8000",
+                            "query": [],
+                            "variable": []
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "201 Created — Success",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/auth/register",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "register"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "cookie": [],
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"data\": {\n    \"user\": {\n      \"id\": 1,\n      \"name\": \"John Doe\",\n      \"email\": \"john@example.com\"\n    },\n    \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 3600\n  }\n}"
+                        },
+                        {
+                            "name": "422 Validation Error",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/auth/register",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "register"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "cookie": [],
+                            "status": "Unprocessable Entity",
+                            "code": 422,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"message\": \"The email has already been taken.\",\n  \"errors\": {\n    \"email\": [\"This email is already registered.\"]\n  }\n}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "Login",
+                    "description": "Authenticate and receive a JWT token.",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "  const json = pm.response.json();",
+                                    "  pm.collectionVariables.set('token', json.data.access_token);",
+                                    "}"
+                                ],
+                                "type": "text/javascript",
+                                "packages": {}
+                            }
+                        }
+                    ],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8000/api/v1/auth/login",
+                            "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "login"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "protocol": "http",
+                            "port": "8000",
+                            "query": [],
+                            "variable": []
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "200 OK — Success",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/auth/login",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "login"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "cookie": [],
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"data\": {\n    \"user\": { \"id\": 1, \"name\": \"John Doe\", \"email\": \"john@example.com\" },\n    \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 3600\n  }\n}"
+                        },
+                        {
+                            "name": "401 Unauthorized — Wrong Credentials",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/auth/login",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "login"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "cookie": [],
+                            "status": "Unauthorized",
+                            "code": 401,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"message\": \"Invalid credentials. Please check your email and password.\"\n}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "Me (Get Profile)",
+                    "description": "Get the authenticated user's profile.",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "GET",
+                        "body": {},
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8000/api/v1/auth/me",
+                            "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "me"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "protocol": "http",
+                            "port": "8000",
+                            "query": [],
+                            "variable": []
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "200 OK",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/auth/me",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "me"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "undefined": ""
+                                }
+                            },
+                            "cookie": [],
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"data\": { \"id\": 1, \"name\": \"John Doe\", \"email\": \"john@example.com\" }\n}"
+                        },
+                        {
+                            "name": "401 Unauthorized",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/auth/me",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "me"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "undefined": ""
+                                }
+                            },
+                            "cookie": [],
+                            "status": "Unauthorized",
+                            "code": 401,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{ \"message\": \"Unauthenticated.\" }"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "Logout",
+                    "description": "Invalidate the current JWT token.",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "POST",
+                        "body": {},
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8000/api/v1/auth/logout",
+                            "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "logout"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "protocol": "http",
+                            "port": "8000",
+                            "query": [],
+                            "variable": []
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "200 OK",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/auth/logout",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "logout"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "undefined": ""
+                                }
+                            },
+                            "cookie": [],
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{ \"message\": \"Successfully logged out.\" }"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "Refresh Token",
+                    "description": "Refresh the JWT token before it expires.",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "POST",
+                        "body": {},
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8000/api/v1/auth/refresh",
+                            "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "refresh"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "protocol": "http",
+                            "port": "8000",
+                            "query": [],
+                            "variable": []
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "200 OK — New Token",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/auth/refresh",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "refresh"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {}
+                            },
+                            "cookie": [],
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"data\": {\n    \"user\": { \"id\": 1, \"name\": \"John Doe\", \"email\": \"john@example.com\" },\n    \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...NEW\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 3600\n  }\n}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                }
+            ],
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "exec": [],
+                        "type": "text/javascript",
+                        "packages": {}
+                    }
+                },
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [],
+                        "type": "text/javascript",
+                        "packages": {}
+                    }
+                }
+            ],
+            "auth": {}
+        },
+        {
+            "name": "Orders",
+            "description": "Order CRUD endpoints. Orders can be filtered by status. Deletion is blocked if payments exist.",
+            "item": [
+                {
+                    "name": "List Orders",
+                    "description": "List all orders with optional status filter and pagination.",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "GET",
+                        "body": {},
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8000/api/v1/orders",
+                            "path": [
+                                "api",
+                                "v1",
+                                "orders"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "protocol": "http",
+                            "port": "8000",
+                            "query": [
+                                {
+                                    "key": "status",
+                                    "value": "pending",
+                                    "description": "Filter by status: pending, confirmed, cancelled",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "15",
+                                    "description": "Items per page (max 100)",
+                                    "type": "string"
+                                }
+                            ],
+                            "variable": []
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "200 OK — Paginated List",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/orders",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "orders"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [
+                                        {
+                                            "key": "status",
+                                            "value": "pending",
+                                            "description": "Filter by status: pending, confirmed, cancelled",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "per_page",
+                                            "value": "15",
+                                            "description": "Items per page (max 100)",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "undefined": ""
+                                }
+                            },
+                            "cookie": [],
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"user_id\": 1,\n      \"user\": { \"id\": 1, \"name\": \"John Doe\", \"email\": \"john@example.com\" },\n      \"items\": [\n        { \"name\": \"Widget A\", \"quantity\": 2, \"price\": 25.00 }\n      ],\n      \"total\": 50.00,\n      \"status\": \"pending\",\n      \"created_at\": \"2026-06-25T12:00:00+00:00\",\n      \"updated_at\": \"2026-06-25T12:00:00+00:00\"\n    }\n  ],\n  \"links\": { \"first\": \"...\", \"last\": \"...\", \"prev\": null, \"next\": null },\n  \"meta\": { \"current_page\": 1, \"last_page\": 1, \"per_page\": 15, \"total\": 1 }\n}"
+                        },
+                        {
+                            "name": "422 Invalid Status Filter",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/orders",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "orders"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [
+                                        {
+                                            "key": "status",
+                                            "value": "pending",
+                                            "description": "Filter by status: pending, confirmed, cancelled",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "per_page",
+                                            "value": "15",
+                                            "description": "Items per page (max 100)",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "undefined": ""
+                                }
+                            },
+                            "cookie": [],
+                            "status": "Unprocessable Entity",
+                            "code": 422,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"message\": \"The selected status is invalid.\",\n  \"errors\": { \"status\": [\"The selected status is invalid.\"] }\n}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "Create Order",
+                    "description": "Create a new order. Total is auto-calculated from items.",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"items\": [\n    { \"name\": \"Widget A\", \"quantity\": 2, \"price\": 25.00 },\n    { \"name\": \"Widget B\", \"quantity\": 1, \"price\": 10.00 }\n  ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8000/api/v1/orders",
+                            "path": [
+                                "api",
+                                "v1",
+                                "orders"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "protocol": "http",
+                            "port": "8000",
+                            "query": [],
+                            "variable": []
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "201 Created — Success",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/orders",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "orders"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"items\": [\n    { \"name\": \"Widget A\", \"quantity\": 2, \"price\": 25.00 },\n    { \"name\": \"Widget B\", \"quantity\": 1, \"price\": 10.00 }\n  ]\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "cookie": [],
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"message\": \"Order created successfully.\",\n  \"data\": {\n    \"id\": 1,\n    \"user_id\": 1,\n    \"items\": [\n      { \"name\": \"Widget A\", \"quantity\": 2, \"price\": 25.00 },\n      { \"name\": \"Widget B\", \"quantity\": 1, \"price\": 10.00 }\n    ],\n    \"total\": 60.00,\n    \"status\": \"pending\",\n    \"created_at\": \"2026-06-25T12:00:00+00:00\",\n    \"updated_at\": \"2026-06-25T12:00:00+00:00\"\n  }\n}"
+                        },
+                        {
+                            "name": "422 Validation Error",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/orders",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "orders"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"items\": [\n    { \"name\": \"Widget A\", \"quantity\": 2, \"price\": 25.00 },\n    { \"name\": \"Widget B\", \"quantity\": 1, \"price\": 10.00 }\n  ]\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "cookie": [],
+                            "status": "Unprocessable Entity",
+                            "code": 422,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"message\": \"At least one item is required.\",\n  \"errors\": { \"items\": [\"At least one item is required.\"] }\n}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "Get Order",
+                    "description": "Retrieve a single order by ID.",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "GET",
+                        "body": {},
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8000/api/v1/orders/1",
+                            "path": [
+                                "api",
+                                "v1",
+                                "orders",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "protocol": "http",
+                            "port": "8000",
+                            "query": [],
+                            "variable": []
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "200 OK",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/orders/1",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "orders",
+                                        "1"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "undefined": ""
+                                }
+                            },
+                            "cookie": [],
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"user_id\": 1,\n    \"user\": { \"id\": 1, \"name\": \"John Doe\", \"email\": \"john@example.com\" },\n    \"items\": [{ \"name\": \"Widget A\", \"quantity\": 2, \"price\": 25.00 }],\n    \"total\": 50.00,\n    \"status\": \"pending\",\n    \"created_at\": \"2026-06-25T12:00:00+00:00\",\n    \"updated_at\": \"2026-06-25T12:00:00+00:00\"\n  }\n}"
+                        },
+                        {
+                            "name": "404 Not Found",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/orders/1",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "orders",
+                                        "1"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "undefined": ""
+                                }
+                            },
+                            "cookie": [],
+                            "status": "Not Found",
+                            "code": 404,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{ \"message\": \"No query results for model [App\\\\Models\\\\Order].\" }"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "Update Order",
+                    "description": "Update an existing order. Recalculates total if items are updated.",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "PUT",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"status\": \"confirmed\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8000/api/v1/orders/34",
+                            "path": [
+                                "api",
+                                "v1",
+                                "orders",
+                                "34"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "protocol": "http",
+                            "port": "8000",
+                            "query": [],
+                            "variable": []
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "200 OK — Updated",
+                            "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/orders/34",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "orders",
+                                        "34"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"status\": \"confirmed\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "cookie": [],
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"message\": \"Order updated successfully.\",\n  \"data\": { \"id\": 1, \"status\": \"confirmed\", \"total\": 50.00, ... }\n}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "Delete Order",
+                    "description": "Delete an order. **Blocked if the order has any payments.**",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "DELETE",
+                        "body": {},
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/orders/1",
+                            "path": [
+                                "api",
+                                "v1",
+                                "orders",
+                                "1"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "200 OK — Deleted",
+                            "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/orders/1",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "orders",
+                                        "1"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "undefined": ""
+                                }
+                            },
+                            "cookie": [],
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{ \"message\": \"Order deleted successfully.\" }"
+                        },
+                        {
+                            "name": "422 Has Payments — Cannot Delete",
+                            "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/orders/1",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "orders",
+                                        "1"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "undefined": ""
+                                }
+                            },
+                            "cookie": [],
+                            "status": "Unprocessable Entity",
+                            "code": 422,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{ \"message\": \"Order cannot be deleted because it has associated payments.\" }"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                }
+            ],
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "exec": [],
+                        "type": "text/javascript",
+                        "packages": {}
+                    }
+                },
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [],
+                        "type": "text/javascript",
+                        "packages": {}
+                    }
+                }
+            ],
+            "auth": {}
+        },
+        {
+            "name": "Payments",
+            "description": "Payment processing and retrieval. Only confirmed orders can be paid.",
+            "item": [
+                {
+                    "name": "List Payments",
+                    "description": "List all payments, optionally filtered by order_id.",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "GET",
+                        "body": {},
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8000/api/v1/payments",
+                            "path": [
+                                "api",
+                                "v1",
+                                "payments"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "protocol": "http",
+                            "port": "8000",
+                            "query": [
+                                {
+                                    "key": "order_id",
+                                    "value": "34",
+                                    "description": "Filter payments by order ID",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "15",
+                                    "description": "",
+                                    "type": "string"
+                                }
+                            ],
+                            "variable": []
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "200 OK — Paginated",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/payments",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "payments"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [
+                                        {
+                                            "key": "order_id",
+                                            "value": "1",
+                                            "description": "Filter payments by order ID",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "per_page",
+                                            "value": "15",
+                                            "description": "",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "undefined": ""
+                                }
+                            },
+                            "cookie": [],
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"order_id\": 1,\n      \"payment_method\": \"credit_card\",\n      \"status\": \"successful\",\n      \"gateway_response\": {\n        \"gateway\": \"credit_card\",\n        \"transaction_id\": \"CC-ABCDEF123456\",\n        \"amount\": 60.00,\n        \"currency\": \"USD\",\n        \"status\": \"approved\",\n        \"processed_at\": \"2026-06-25T12:00:00+00:00\"\n      },\n      \"created_at\": \"2026-06-25T12:00:00+00:00\",\n      \"updated_at\": \"2026-06-25T12:00:00+00:00\"\n    }\n  ],\n  \"meta\": { \"current_page\": 1, \"total\": 1, \"per_page\": 15 }\n}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "Process Payment (Credit Card)",
+                    "description": "Process a payment using the Credit Card gateway. Order must be `confirmed`.",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"order_id\": 34,\n  \"payment_method\": \"credit_card\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "0QHRTY12P3EA",
+                                "description": "Optional: Prevents duplicate payments",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8000/api/v1/payments",
+                            "path": [
+                                "api",
+                                "v1",
+                                "payments"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "protocol": "http",
+                            "port": "8000",
+                            "query": [],
+                            "variable": []
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "201 Created — Payment Successful",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Idempotency-Key",
+                                        "value": "{{$guid}}",
+                                        "description": "Optional: Prevents duplicate payments",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/payments",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "payments"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"order_id\": 1,\n  \"payment_method\": \"credit_card\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "cookie": [],
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"message\": \"Payment processed successfully.\",\n  \"data\": {\n    \"id\": 1,\n    \"order_id\": 1,\n    \"payment_method\": \"credit_card\",\n    \"status\": \"successful\",\n    \"gateway_response\": {\n      \"gateway\": \"credit_card\",\n      \"transaction_id\": \"CC-XYZ789ABC123\",\n      \"order_id\": 1,\n      \"amount\": 60.00,\n      \"currency\": \"USD\",\n      \"status\": \"approved\",\n      \"processed_at\": \"2026-06-25T12:00:00+00:00\"\n    },\n    \"created_at\": \"2026-06-25T12:00:00+00:00\",\n    \"updated_at\": \"2026-06-25T12:00:00+00:00\"\n  }\n}"
+                        },
+                        {
+                            "name": "422 Order Not Confirmed",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Idempotency-Key",
+                                        "value": "{{$guid}}",
+                                        "description": "Optional: Prevents duplicate payments",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/payments",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "payments"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"order_id\": 1,\n  \"payment_method\": \"credit_card\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "cookie": [],
+                            "status": "Unprocessable Entity",
+                            "code": 422,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{ \"message\": \"Payments can only be processed for orders with status [confirmed]. Current status: [pending].\" }"
+                        },
+                        {
+                            "name": "422 Invalid Payment Method",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Idempotency-Key",
+                                        "value": "{{$guid}}",
+                                        "description": "Optional: Prevents duplicate payments",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/payments",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "payments"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"order_id\": 1,\n  \"payment_method\": \"credit_card\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "cookie": [],
+                            "status": "Unprocessable Entity",
+                            "code": 422,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"message\": \"The selected payment method is invalid.\",\n  \"errors\": { \"payment_method\": [\"Payment method must be one of: credit_card, paypal, stripe.\"] }\n}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "Process Payment (PayPal)",
+                    "description": "Process a payment using the PayPal gateway.",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"order_id\": 1,\n  \"payment_method\": \"paypal\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "{{$guid}}",
+                                "description": "Optional: Prevents duplicate payments",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8000/api/v1/payments",
+                            "path": [
+                                "api",
+                                "v1",
+                                "payments"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "protocol": "http",
+                            "port": "8000",
+                            "query": [],
+                            "variable": []
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "201 Created — PayPal Success",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Idempotency-Key",
+                                        "value": "{{$guid}}",
+                                        "description": "Optional: Prevents duplicate payments",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/payments",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "payments"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"order_id\": 1,\n  \"payment_method\": \"paypal\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "cookie": [],
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"message\": \"Payment processed successfully.\",\n  \"data\": {\n    \"id\": 2,\n    \"order_id\": 1,\n    \"payment_method\": \"paypal\",\n    \"status\": \"successful\",\n    \"gateway_response\": {\n      \"gateway\": \"paypal\",\n      \"transaction_id\": \"PAYPAL-ABCDE12345\",\n      \"payer_id\": \"PAYER-XYZWQRST\",\n      \"amount\": 60.00,\n      \"currency\": \"USD\",\n      \"status\": \"COMPLETED\",\n      \"mode\": \"sandbox\"\n    }\n  }\n}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "Process Payment (Stripe)",
+                    "description": "Process a payment using the Stripe gateway (demonstrates extensibility).",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"order_id\": 1,\n  \"payment_method\": \"stripe\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "{{$guid}}",
+                                "description": "Optional: Prevents duplicate payments",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8000/api/v1/payments",
+                            "path": [
+                                "api",
+                                "v1",
+                                "payments"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "protocol": "http",
+                            "port": "8000",
+                            "query": [],
+                            "variable": []
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "201 Created — Stripe Success",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Idempotency-Key",
+                                        "value": "{{$guid}}",
+                                        "description": "Optional: Prevents duplicate payments",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/payments",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "payments"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"order_id\": 1,\n  \"payment_method\": \"stripe\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "cookie": [],
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"message\": \"Payment processed successfully.\",\n  \"data\": {\n    \"id\": 3,\n    \"order_id\": 1,\n    \"payment_method\": \"stripe\",\n    \"status\": \"successful\",\n    \"gateway_response\": {\n      \"gateway\": \"stripe\",\n      \"charge_id\": \"ch_AbCdEfGhIjKlMnOpQrStUvWx\",\n      \"object\": \"charge\",\n      \"amount\": 6000,\n      \"currency\": \"usd\",\n      \"status\": \"succeeded\",\n      \"livemode\": false\n    }\n  }\n}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "Get Payment",
+                    "description": "Retrieve a single payment by ID.",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "GET",
+                        "body": {},
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "description": "",
+                                "type": "string"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8000/api/v1/payments/12",
+                            "path": [
+                                "api",
+                                "v1",
+                                "payments",
+                                "12"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "protocol": "http",
+                            "port": "8000",
+                            "query": [],
+                            "variable": []
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "200 OK",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "description": "",
+                                        "disabled": false
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:8000/api/v1/payments/12",
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "payments",
+                                        "12"
+                                    ],
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "protocol": "http",
+                                    "port": "8000",
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "body": {
+                                    "undefined": ""
+                                }
+                            },
+                            "cookie": [],
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"order_id\": 1,\n    \"payment_method\": \"credit_card\",\n    \"status\": \"successful\",\n    \"gateway_response\": { ... },\n    \"created_at\": \"2026-06-25T12:00:00+00:00\"\n  }\n}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                }
+            ],
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "exec": [],
+                        "type": "text/javascript",
+                        "packages": {}
+                    }
+                },
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [],
+                        "type": "text/javascript",
+                        "packages": {}
+                    }
+                }
+            ],
+            "auth": {}
+        }
+    ],
+    "variable": [],
+    "event": [],
+    "auth": {}
+}

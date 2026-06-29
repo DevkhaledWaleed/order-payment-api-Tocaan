@@ -14,9 +14,9 @@ class OrderItemFactory extends Factory
     {
         return [
             'order_id' => Order::factory(),
-            'name'     => $this->faker->word() . ' Product',
+            'name' => $this->faker->word().' Product',
             'quantity' => $this->faker->numberBetween(1, 5),
-            'price'    => $this->faker->randomFloat(2, 5, 100),
+            'price' => $this->faker->randomFloat(2, 5, 100),
         ];
     }
 }
