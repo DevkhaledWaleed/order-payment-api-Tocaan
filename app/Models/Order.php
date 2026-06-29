@@ -16,14 +16,8 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'items',
         'total',
         'status',
-    ];
-
-    protected $casts = [
-        'items'  => 'array',
-        'total'  => 'float',
     ];
 
     /**
@@ -48,6 +42,10 @@ class Order extends Model
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
+    }
+    public function items(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
     }
 
     // ── Scopes ───────────────────────────────────────────────────────────────

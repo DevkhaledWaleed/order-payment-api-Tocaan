@@ -16,9 +16,7 @@ use LogicException;
 
 class OrderController extends Controller
 {
-    public function __construct(private readonly OrderService $orderService) {
-        $this->authorizeResource(Order::class, 'order');
-    }
+    public function __construct(private readonly OrderService $orderService) {}
 
     /**
      * GET /api/orders
@@ -73,6 +71,9 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order): JsonResponse
     {
+        if ($order->user_id !== $request->user()->id) {
+            abort(403);
+        }
         $updated = $this->orderService->updateOrder($order, $request->validated());
         $updated->load('user');
 

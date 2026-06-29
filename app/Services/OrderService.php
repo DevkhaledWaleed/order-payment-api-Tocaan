@@ -16,7 +16,7 @@ class OrderService
      */
     public function listOrders(?string $status, int $perPage = 15): LengthAwarePaginator
     {
-        return Order::with('user')
+        return Order::with(['user', 'items'])
             ->byStatus($status)
             ->latest()
             ->paginate($perPage);
@@ -29,12 +29,20 @@ class OrderService
     public function createOrder(array $data): Order
     {
         return DB::transaction(function () use ($data) {
-            $data['total']  = $this->calculateTotal($data['items']);
+            $total = $this->calculateTotal($data['items']);
 
             $statusStr = $data['status'] ?? 'pending';
-            $data['status'] = OrderStatus::fromString($statusStr) ?? OrderStatus::PENDING;
+            $status = OrderStatus::fromString($statusStr) ?? OrderStatus::PENDING;
 
-            return Order::create($data);
+            $order = Order::create([
+                'user_id' => $data['user_id'],
+                'total'   => $total,
+                'status'  => $status,
+            ]);
+
+            $order->items()->createMany($data['items']);
+
+            return $order->load('items');
         });
     }
 
@@ -45,17 +53,24 @@ class OrderService
     public function updateOrder(Order $order, array $data): Order
     {
         return DB::transaction(function () use ($order, $data) {
+            // Lock the order for update to prevent race conditions
+            $lockedOrder = Order::where('id', $order->id)->lockForUpdate()->firstOrFail();
+
             if (isset($data['items'])) {
-                $data['total'] = $this->calculateTotal($data['items']);
+                $lockedOrder->total = $this->calculateTotal($data['items']);
+
+                // Replace items entirely
+                $lockedOrder->items()->delete();
+                $lockedOrder->items()->createMany($data['items']);
             }
 
             if (isset($data['status']) && is_string($data['status'])) {
-                $data['status'] = OrderStatus::fromString($data['status']);
+                $lockedOrder->status = OrderStatus::fromString($data['status']);
             }
 
-            $order->update($data);
+            $lockedOrder->save();
 
-            return $order->fresh();
+            return $lockedOrder->load('items');
         });
     }
 
@@ -66,13 +81,13 @@ class OrderService
     public function deleteOrder(Order $order): void
     {
         DB::transaction(function () use ($order) {
-            if ($order->hasPayments()) {
+            $lockedOrder = Order::where('id', $order->id)->lockForUpdate()->firstOrFail();
+            if ($lockedOrder->hasPayments()) {
                 throw new LogicException(
                     'Order cannot be deleted because it has associated payments.'
                 );
             }
-
-            $order->delete();
+            $lockedOrder->delete();
         });
     }
 
