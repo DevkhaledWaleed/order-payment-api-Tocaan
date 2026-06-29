@@ -54,20 +54,22 @@ class PaymentService
             }
         }
 
-        // Transactional processing
+        // ── Transactional processing ─────────────────────────────────────────
         // All writes are inside a transaction so a gateway/DB failure rolls
         // everything back instead of leaving a stale `pending` record.
-        // Business rule & Locking
+
+        //Business rule & Locking 
         // We lock the order first to ensure any concurrent updates on the order finish first.
         return DB::transaction(function () use ($dto) {
-            $order = Order::where('id', $dto->orderId)->lockForUpdate()->firstOrFail();
+        $order = Order::where('id', $dto->orderId)->lockForUpdate()->firstOrFail();
 
-            if (! $order->isConfirmed()) {
-                throw new LogicException(
-                    'Payments can only be processed for orders with status [confirmed]. '.
-                    "Current status: [{$order->status->toString()}]."
-                );
-            }
+        if (! $order->isConfirmed()) {
+            throw new LogicException(
+                'Payments can only be processed for orders with status [confirmed]. ' .
+                "Current status: [{$order->status->toString()}]."
+            );
+        }
+
             // 1. Create payment record (pending)
             $payment = Payment::create([
                 'order_id' => $order->id,
