@@ -27,8 +27,8 @@ class Order extends Model
     protected function status(): Attribute
     {
         return Attribute::make(
-            get: fn ($v) => is_numeric($v) ? OrderStatus::from((int)$v) : OrderStatus::fromString($v),
-            set: fn ($v) => $v instanceof OrderStatus ? $v->value : OrderStatus::fromString($v)?->value,
+            get: fn ($status) => is_numeric($status) ? OrderStatus::from((int)$status) : OrderStatus::fromString($status),
+            set: fn ($status) => $status instanceof OrderStatus ? $status->value : OrderStatus::fromString($status)?->value,
         );
     }
 
